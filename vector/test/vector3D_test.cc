@@ -1,4 +1,4 @@
-#include "../include/Vector3D.h"
+#include "../include/vector3D.h"
 
 #include <iostream>
 

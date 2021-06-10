@@ -10,6 +10,8 @@ template<typename T> class Vector2D{
     template<typename U> friend Vector2D<U> operator/(const U scale, const Vector2D<U>& rhs);
 
     public:
+        using value_type = T;
+
         Vector2D() = default;
 
         Vector2D(const T x, const T y): _x(x), _y(y) {}

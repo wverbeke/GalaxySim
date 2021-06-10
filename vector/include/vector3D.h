@@ -11,6 +11,8 @@ template<typename T> class Vector3D{
     template<typename U> friend Vector3D<U> cross(const Vector3D<U>& lhs, const Vector3D<U>& rhs);
 
     public:
+        using value_type = T;
+
         Vector3D() = default;
 
         Vector3D(const T x, const T y, const T z): _x(x), _y(y), _z(z) {}
