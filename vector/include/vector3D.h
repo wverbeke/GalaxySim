@@ -201,15 +201,6 @@ template<typename T> Vector3D<T> cross(const Vector3D<T>& lhs, const Vector3D<T>
 }
 
 
-template<typename T> T square(const Vector3D<T>& lhs){
-    return (lhs * lhs);
-}
-
-
-template<typename T> T abs(const Vector3D<T>& lhs){
-    return std::sqrt(square(lhs));
-}
-
 template<typename T> std::ostream& operator<<(std::ostream& os, const Vector3D<T>& rhs){
     os << "(" << rhs.x() << ", "<< rhs.y() <<", " << rhs.z() << ")";
     return os;
