@@ -5,8 +5,14 @@ template<typename T> class Body{
 
     public:
         using numeric_type = typename T::value_type;
+        using vector_type = T;
+
         Body() = default;
-        Body(const T& position, const T& velocity, const numeric_type _mass);
+        Body(const T& position, const T& velocity, const numeric_type mass):
+            _position(position),
+            _velocity(velocity),
+            _mass(mass)
+        {}
 
         Body(const Body<T>&) = default;
         Body(Body<T>&&) = default;

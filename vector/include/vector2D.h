@@ -181,15 +181,6 @@ template<typename T> Vector2D<T> operator/(const T scale, const Vector2D<T>& rhs
 }
 
 
-template<typename T> T square(const Vector2D<T>& lhs){
-    return (lhs * lhs);
-}
-
-
-template<typename T> T abs(const Vector2D<T>& lhs){
-    return std::sqrt(square(lhs));
-}
-
 template<typename T> std::ostream& operator<<(std::ostream& os, const Vector2D<T>& rhs){
     os << "(" << rhs.x() << ", "<< rhs.y() << ")";
     return os;

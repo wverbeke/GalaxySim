@@ -1,6 +1,6 @@
 #include "../include/body.h"
-#include "../../vector/include/Vector2D.h"
-#include "../../vector/include/Vector3D.h"
+#include "../../vector/include/vector2D.h"
+#include "../../vector/include/vector3D.h"
 
 int main(){
     Body<Vector2D<float>> body_2D_float;
@@ -17,4 +17,7 @@ int main(){
 
     Vector3D<float> velocity_update{3., 2., 1.};
     body_3D_float.updateVelocity(velocity_update);
+
+
+    Body<Vector3D<float>> body_constructed{position_update, velocity_update, 300.0f};
 }
