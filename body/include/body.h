@@ -32,5 +32,10 @@ template<typename T> class Body{
         numeric_type _mass;
 };
 
+template<typename T> std::ostream& operator<<(std::ostream& os, const Body<T>& body){
+    os << "mass: " << body.mass() << " | position: " << body.position() << " | velocity: " << body.velocity();
+    return os;
+}
+
 
 #endif
