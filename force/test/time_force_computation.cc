@@ -3,16 +3,15 @@
 #include <array>
 #include <random>
 
-#include "../include/force.h"
-#include "../include/body.h"
+#include "../include/direct_sum_force_computer.h"
+#include "../../body/include/body.h"
 #include "../../vector/include/vector3D.h"
-
 
 int main(){
     using numeric_type = double;
     using vector_type = Vector3D<numeric_type>;
     using body_type = Body<vector_type>;
-    InteractionComputer<body_type> forceComputer(1.);
+    DirectSumForceComputer<body_type> force_computer(1.);
 
     // Generate <loop_size> random bodies.
     // The force between these bodies will be computed two-by-two.
@@ -31,7 +30,7 @@ int main(){
 
     auto t1 = std::chrono::high_resolution_clock::now();
     for(std::size_t i{0}; i < loop_size; ++i){
-        forceComputer.force(bodies[i], bodies[i + loop_size]);
+        force_computer.pairwiseForce(bodies[i], bodies[i + loop_size]);
     }
     auto t2 = std::chrono::high_resolution_clock::now();
 
