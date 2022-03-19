@@ -22,7 +22,12 @@ template<typename BodyType> class StarSystem{
         numeric_type kineticEnergy() const;
 
         std::size_t size() const{ return _bodies.size();}
+
         const BodyType& operator[](const std::size_t index) const{
+            return _bodies.at(index);
+        }
+
+        BodyType& operator[](const std::size_t index){
             return _bodies.at(index);
         }
 

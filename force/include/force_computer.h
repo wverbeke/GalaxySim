@@ -10,7 +10,7 @@
 // Unit agnostic computation of force the left-hand side body exerts on the right-hand side body.
 // The result of this calculation has to be multiplied with a suitable gravitational constant.
 template<typename T> T _gravitationalForce(const Body<T>& lhs, const Body<T>& rhs){
-    T position_difference = (lhs.position() - rhs.position());
+    T position_difference = (rhs.position() - lhs.position());
 
     // Avoid repeating the vector subtraction here.
     typename T::value_type distance = abs(position_difference);
@@ -43,18 +43,18 @@ template<typename BodyType> class ForceComputerBase{
 
             // Re-initialize the vector of _forces if required by the size of the star system.
             if(_forces.size() != star_system.size()){
-                _forces = std::vector<BodyType>(star_system.size());
+                _forces = std::vector<vector_type>(star_system.size());
             } 
 
             // Do the actual force computation.
-            computeForcesImpl();
+            computeForcesImpl(star_system);
         }
 
         // Retrieve the force being exerted on one body by the other bodies.
         // The gravitational constant gets applied at this step so that the rest of the
         // implementation is agnostic of it.
         vector_type totalForce(const std::size_t body_index){
-            return _G * _forces.at(body_index);
+            return _forces.at(body_index);
         }
 
         // Compute the pairwise force between two bodies.
