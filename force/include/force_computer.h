@@ -54,12 +54,15 @@ template<typename BodyType> class ForceComputerBase{
         // The gravitational constant gets applied at this step so that the rest of the
         // implementation is agnostic of it.
         vector_type totalForce(const std::size_t body_index){
-            return _forces.at(body_index);
+            return _G * _forces.at(body_index);
         }
 
         // Compute the pairwise force between two bodies.
+        // This does not include the gravitational constant because it would be a waste of compute
+        // to multiply each force component by it. Instead the total force can be multiplied by
+        // this number.
         vector_type pairwiseForce(const BodyType& lhs, const BodyType& rhs) const{
-            return _G * _gravitationalForce(lhs, rhs);
+            return _gravitationalForce(lhs, rhs);
         }
 
     protected:
