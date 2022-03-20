@@ -3,7 +3,7 @@
 
 #include <algorithm>
 
-#include "force_computer.h"
+#include "force_computer_base.h"
 
 
 template<typename BodyType> class DirectSumForceComputer: public ForceComputerBase<BodyType>{
