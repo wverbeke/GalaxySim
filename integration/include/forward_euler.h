@@ -16,12 +16,10 @@ template<typename BodyType> class ForwardEuler: IntegratorBase<BodyType>{
         {
             // Compute forces
             force_computer.computeForces(star_system);
-            std::cout << "##############################\n";
             for(std::size_t b{0}; b < star_system.size(); ++b){
                 BodyType& body = star_system[b];
                 body.updatePosition(time_step * body.velocity());        
                 body.updateVelocity(time_step * force_computer.totalForce(b)/body.mass());
-                std::cout << force_computer.totalForce(b) << std::endl;
             }
         }
 };
