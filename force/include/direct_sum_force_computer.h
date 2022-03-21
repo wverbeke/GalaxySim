@@ -52,7 +52,7 @@ template<typename BodyType> class DirectSumForceComputer: public ForceComputerBa
             auto force_and_potential = 
                 pairwiseForceAndPotential(star_system[lhs_index], star_system[rhs_index]);
             _forces[lhs_index] += force_and_potential.first;
-            _forces[rhs_index] += force_and_potential.first;
+            _forces[rhs_index] -= force_and_potential.first;
             
             // The potential energy body i has due to body j's gravitation is the same as the
             // potential energy body j has due to body i's gravitation. The potential energy for
