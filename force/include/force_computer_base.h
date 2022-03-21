@@ -10,20 +10,7 @@
 #include "../../body/include/star_system.h"
 #include "../../vector/include/vector_math.h"
 
-// Unit agnostic computation of force the left-hand side body exerts on the right-hand side body.
-// The result of this calculation has to be multiplied with a suitable gravitational constant.
-template<typename T> T _gravitationalForce(const Body<T>& lhs, const Body<T>& rhs){
-    T position_difference = (rhs.position() - lhs.position());
-
-    // Avoid repeating the vector subtraction here.
-    typename T::value_type distance = abs(position_difference);
-
-    // Use pre-computed distance to avoid having to compute an inner product of vectors or another
-    // square root.
-    return (lhs.mass() * rhs.mass() * position_difference) / (distance*distance*distance);
-}
-
-
+template<typename BodyType> class StarSystem;
 template<typename BodyType> class ForceComputerBase{
 
     public:

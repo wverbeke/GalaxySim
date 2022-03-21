@@ -24,9 +24,29 @@ template<typename BodyType> class StarSystem{
         StarSystem& operator=(StarSystem&&) = delete;
 
         // Properties of the while star system.
-        numeric_type energy() const;
-        numeric_type potentialEnergy() const;
-        numeric_type kineticEnergy() const;
+        
+        // Total energy in the star system.
+        numeric_type energy() const{
+            return (kineticEnergy() + potentialEnergy());
+        }
+
+        // Kinetic energy.
+        numeric_type kineticEnergy() const{
+            numeric_type kinetic_energy = 0.;
+            for(const auto& body: _bodies){
+                kinetic_energy += square(body.velocity())*body.mass();
+            }
+            kinetic_energy *= 0.5;
+            return kinetic_energy;
+        }
+
+        // Potential energy.
+        // This will only return correct results if the forces in the star system were already
+        // computed. The force and potential energy computations largely overlap so they are done
+        // simultaneously for efficiency.
+        numeric_type potentialEnergy() const{
+            return _force_computer.potentialEnergy();
+        }
 
         // Access individual bodies.
         std::size_t size() const{ return _bodies.size();}
@@ -44,8 +64,9 @@ template<typename BodyType> class StarSystem{
         const_iterator end() const{ return _bodies.cend(); }
         const_iterator cend() const{ return _bodies.cend(); }
 
-        // Interface to compute forces and accelerations.
+        // Interface to compute forces and accelerations, as well as the potential energy.
         void computeForces() const{ _force_computer.computeForces(*this); }
+        void computeForcesAndPotential() const{ _force_computer.computeForcesAndPotential(*this); }
         vector_type acceleration(const std::size_t index){
             return (_force_computer.totalForce(index)/_bodies.at(index).mass());
         }
