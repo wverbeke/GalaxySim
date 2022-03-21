@@ -1,6 +1,5 @@
 #include <chrono>
 #include <iostream>
-#include <array>
 #include <random>
 
 #include "../include/direct_sum_force_computer.h"
@@ -20,7 +19,7 @@ int main(){
     constexpr std::size_t loop_size = 1e6;
     std::mt19937 random_device{0};
     std::uniform_real_distribution<numeric_type> uniform(0., 10.);
-    body_type* bodies = new body_type[loop_size*2];
+    std::vector<body_type> bodies(loop_size*2);
     for(std::size_t i = 0; i < loop_size * 2; ++i){
         vector_type pos = vector_type(uniform(random_device), uniform(random_device), uniform(random_device));
         vector_type vel = vector_type(uniform(random_device), uniform(random_device), uniform(random_device));
@@ -37,5 +36,15 @@ int main(){
     // Calculate the time it took to compute all pairwise forces.
     std::chrono::duration<double, std::milli> time = t2 - t1;
     std::cout << "Elapsed time = " << time.count() << " ms | for " << loop_size << " force computations." << std::endl;
-    delete[] bodies;
+
+    t1 = std::chrono::high_resolution_clock::now();
+    for(std::size_t i{0}; i < loop_size; ++i){
+        force_computer.pairwiseForceAndPotential(bodies[i], bodies[i + loop_size]);
+    }
+    t2 = std::chrono::high_resolution_clock::now();
+
+    // Calculate the time it took to compute all pairwise forces.
+    time = t2 - t1;
+    std::cout << "Elapsed time = " << time.count() << " ms | for " << loop_size << " force and potential energy computations." << std::endl;
+
 }
