@@ -11,10 +11,10 @@ template<typename BodyType> class ForwardEuler: IntegratorBase<BodyType>{
         using numeric_type = typename BodyType::numeric_type;
         
         virtual void timeStep(StarSystem<BodyType>& star_system,
-                              const numeric_type time_step) const override
+                              const numeric_type time_step) override
         {
-            // Compute forces
-            star_system.computeForces();
+            // Compute forces and potentials.
+            star_system.computeForcesAndPotential();
             for(std::size_t b{0}; b < star_system.size(); ++b){
                 BodyType& body = star_system[b];
                 body.updatePosition(time_step * body.velocity());        

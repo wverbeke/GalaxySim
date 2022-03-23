@@ -7,7 +7,9 @@ template <typename BodyType> class IntegratorBase{
 
     public:
         using numeric_type = typename BodyType::numeric_type;
-        virtual void timeStep(StarSystem<BodyType>&, const numeric_type) const = 0;
+
+        // Integrators might be stateful, so this method can not be const for all integrators.
+        virtual void timeStep(StarSystem<BodyType>&, const numeric_type) = 0;
 };
 
 
