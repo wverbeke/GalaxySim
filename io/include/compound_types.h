@@ -1,6 +1,8 @@
 #ifndef compound_types_H
 #define compound_types_H
 
+#include <stdexcept>
+
 #include "hdf5.h"
 
 #include "numeric_types.h"
@@ -21,5 +23,30 @@ template<typename T> hid_t h5_Vector3D(){
     H5Tinsert(vector3d_type_id, "y", offsetof(Vector3D<T>, _y), h5_memory_type<T>());
     H5Tinsert(vector3d_type_id, "z", offsetof(Vector3D<T>, _z), h5_memory_type<T>());
     return vector3d_type_id;
+}
+
+
+template<typename T> hid_t h5_vector_type(){
+    throw std::domain_error("Unknown vector type for conversion to HDF5 compound type.");
+}
+
+
+template<> hid_t h5_vector_type<Vector2D<float>>(){
+    return h5_Vector2D<float>();
+}
+
+
+template<> hid_t h5_vector_type<Vector2D<double>>(){
+    return h5_Vector2D<double>();
+}
+
+
+template<> hid_t h5_vector_type<Vector3D<float>>(){
+    return h5_Vector3D<float>();
+}
+
+
+template<> hid_t h5_vector_type<Vector3D<double>>(){
+    return h5_Vector3D<double>();
 }
 #endif
