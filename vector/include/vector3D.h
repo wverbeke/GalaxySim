@@ -4,7 +4,15 @@
 #include <ostream>
 #include <cmath>
 
+#include "hdf5.h"
+
+// Friend functions for doing hdf5 IO.
+// The function is defined under the io directory.
+template<typename T> hid_t h5_Vector3D();
+
 template<typename T> class Vector3D{
+    friend hid_t h5_Vector3D<T>();
+
     template<typename U> friend U operator*(const Vector3D<U>& lhs, const Vector3D<U>& rhs);
     template<typename U> friend U operator/(const Vector3D<U>& lhs, const Vector3D<U>& rhs);
     template<typename U> friend Vector3D<U> operator/(const U scale, const Vector3D<U>& rhs);
