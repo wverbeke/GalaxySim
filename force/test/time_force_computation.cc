@@ -4,6 +4,7 @@
 
 #include "../include/direct_sum_force_computer.h"
 #include "../../body/include/body.h"
+//#include "../../vector/include/vector3D_array.h"
 #include "../../vector/include/vector3D.h"
 
 int main(){
@@ -16,7 +17,7 @@ int main(){
     // The force between these bodies will be computed two-by-two.
     // The reason for not using the same body repeatedly is that numeric differences in the body
     // positions and masses might change the runtime of the force computation.
-    constexpr std::size_t loop_size = 1e6;
+    constexpr std::size_t loop_size = 1e7;
     std::mt19937 random_device{0};
     std::uniform_real_distribution<numeric_type> uniform(0., 10.);
     std::vector<body_type> bodies(loop_size*2);

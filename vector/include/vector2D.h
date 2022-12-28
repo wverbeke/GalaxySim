@@ -4,10 +4,17 @@
 #include <ostream>
 #include <cmath>
 
+#include "hdf5.h"
+
+// Friend functions to do hdf5 I/O.
+template<typename T> hid_t h5_Vector2D();
+
 template<typename T> class Vector2D{
     template<typename U> friend U operator*(const Vector2D<U>& lhs, const Vector2D<U>& rhs);
     template<typename U> friend U operator/(const Vector2D<U>& lhs, const Vector2D<U>& rhs);
     template<typename U> friend Vector2D<U> operator/(const U scale, const Vector2D<U>& rhs);
+
+    friend hid_t h5_Vector2D<T>();
 
     public:
         using value_type = T;
