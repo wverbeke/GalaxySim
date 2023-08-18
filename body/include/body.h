@@ -1,6 +1,8 @@
 #ifndef Body_H
 #define Body_H
 
+#include <ostream>
+
 template<typename T> class Body{
 
     public:
