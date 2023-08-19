@@ -5,6 +5,7 @@
 
 // For std::pair.
 #include <utility>
+#include <vector>
 
 #include "../../body/include/body.h"
 #include "../../body/include/star_system.h"
