@@ -9,10 +9,15 @@
 // Friend functions to do hdf5 I/O.
 template<typename T> hid_t h5_Vector2D();
 
+template<typename T> class Vector2D;
+template<typename T> T operator*(const Vector2D<T>&, const Vector2D<T>&);
+template<typename T> T operator/(const Vector2D<T>&, const Vector2D<T>&);
+template<typename T> Vector2D<T> operator/(const T, const Vector2D<T>&);
+
 template<typename T> class Vector2D{
-    template<typename U> friend U operator*(const Vector2D<U>& lhs, const Vector2D<U>& rhs);
-    template<typename U> friend U operator/(const Vector2D<U>& lhs, const Vector2D<U>& rhs);
-    template<typename U> friend Vector2D<U> operator/(const U scale, const Vector2D<U>& rhs);
+    friend T operator*<T>(const Vector2D&, const Vector2D&);
+    friend T operator/<T>(const Vector2D&, const Vector2D&);
+    friend Vector2D<T> operator/<T>(const T, const Vector2D&);
 
     friend hid_t h5_Vector2D<T>();
 
