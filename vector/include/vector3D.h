@@ -31,25 +31,25 @@ template<typename T> class Vector3D{
 
         ~Vector3D() = default;
 
-        Vector3D<T>& operator=(const Vector3D<T>&) = default;
+        Vector3D& operator=(const Vector3D&) = default;
 
-        Vector3D<T>& operator=(Vector3D<T>&&) = default;
+        Vector3D& operator=(Vector3D&&) = default;
 
-        Vector3D<T>& operator+=(const Vector3D<T>& rhs);
+        Vector3D& operator+=(const Vector3D& rhs);
 
-        Vector3D<T>& operator+=(const T shift);
+        Vector3D& operator+=(const T shift);
 
-        Vector3D<T>& operator-=(const Vector3D<T>& rhs);
+        Vector3D& operator-=(const Vector3D& rhs);
 
-        Vector3D<T>& operator-=(const T shift);
+        Vector3D& operator-=(const T shift);
 
-        Vector3D<T>& operator*=(const T scale);
+        Vector3D& operator*=(const T scale);
 
-        Vector3D<T>& operator/=(const T scale);
+        Vector3D& operator/=(const T scale);
 
-        Vector3D<T>& projectAssign(const Vector3D<T>& rhs);
+        Vector3D& projectAssign(const Vector3D& rhs);
 
-        Vector3D<T> project(const Vector3D<T>& rhs) const;
+        Vector3D project(const Vector3D& rhs) const;
 
         T x() const{ return _x; }
         T y() const{ return _y; }
@@ -63,7 +63,7 @@ template<typename T> class Vector3D{
 };
 
 
-template<typename T> Vector3D<T>& Vector3D<T>::operator+=(const Vector3D<T>& rhs){
+template<typename T> Vector3D<T>& Vector3D<T>::operator+=(const Vector3D& rhs){
     _x += rhs._x;
     _y += rhs._y;
     _z += rhs._z;
@@ -103,7 +103,7 @@ template<typename T> Vector3D<T> operator-(const Vector3D<T>& lhs){
 }
 
 
-template<typename T> Vector3D<T>& Vector3D<T>::operator-=(const Vector3D<T>& rhs){
+template<typename T> Vector3D<T>& Vector3D<T>::operator-=(const Vector3D& rhs){
     // Don't call the unary - operator here to avoid the construction of a temporary vector;
     _x -= rhs._x;
     _y -= rhs._y;
