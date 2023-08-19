@@ -1,4 +1,5 @@
 #include "../include/vector2D.h"
+#include "../include/vector_math.h"
 
 #include <iostream>
 

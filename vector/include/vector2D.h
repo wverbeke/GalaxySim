@@ -23,31 +23,31 @@ template<typename T> class Vector2D{
 
         Vector2D(const T x, const T y): _x(x), _y(y) {}
 
-        Vector2D(const Vector2D<T>&) = default;
+        Vector2D(const Vector2D&) = default;
 
-        Vector2D(Vector2D<T>&&) = default;
+        Vector2D(Vector2D&&) = default;
 
         ~Vector2D() = default;
 
-        Vector2D<T>& operator=(const Vector2D<T>&) = default;
+        Vector2D& operator=(const Vector2D&) = default;
 
-        Vector2D<T>& operator=(Vector2D<T>&&) = default;
+        Vector2D& operator=(Vector2D&&) = default;
 
-        Vector2D<T>& operator+=(const Vector2D<T>& rhs);
+        Vector2D& operator+=(const Vector2D& rhs);
 
-        Vector2D<T>& operator+=(const T shift);
+        Vector2D& operator+=(const T shift);
 
-        Vector2D<T>& operator-=(const Vector2D<T>& rhs);
+        Vector2D& operator-=(const Vector2D& rhs);
 
-        Vector2D<T>& operator-=(const T shift);
+        Vector2D& operator-=(const T shift);
 
-        Vector2D<T>& operator*=(const T scale);
+        Vector2D& operator*=(const T scale);
 
-        Vector2D<T>& operator/=(const T scale);
+        Vector2D& operator/=(const T scale);
 
-        Vector2D<T>& projectAssign(const Vector2D<T>& rhs);
+        Vector2D& projectAssign(const Vector2D& rhs);
 
-        Vector2D<T> project(const Vector2D<T>& rhs) const;
+        Vector2D project(const Vector2D& rhs) const;
 
         T x() const{ return _x; }
         T y() const{ return _y; }
@@ -59,7 +59,7 @@ template<typename T> class Vector2D{
 };
 
 
-template<typename T> Vector2D<T>& Vector2D<T>::operator+=(const Vector2D<T>& rhs){
+template<typename T> Vector2D<T>& Vector2D<T>::operator+=(const Vector2D& rhs){
     _x += rhs._x;
     _y += rhs._y;
     return (*this);
@@ -97,7 +97,7 @@ template<typename T> Vector2D<T> operator-(const Vector2D<T>& lhs){
 }
 
 
-template<typename T> Vector2D<T>& Vector2D<T>::operator-=(const Vector2D<T>& rhs){
+template<typename T> Vector2D<T>& Vector2D<T>::operator-=(const Vector2D& rhs){
     // Don't call the unary - operator here to avoid the construction of a temporary vector;
     _x -= rhs._x;
     _y -= rhs._y;
