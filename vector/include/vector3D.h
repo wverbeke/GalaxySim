@@ -10,11 +10,18 @@
 // The function is defined under the io directory.
 template<typename T> hid_t h5_Vector3D();
 
+template <typename T> class Vector3D;
+template <typename T> T operator*(const Vector3D<T>&, const Vector3D<T>&);
+template <typename T> T operator/(const Vector3D<T>&, const Vector3D<T>&);
+template <typename T> Vector3D<T> operator/(const T, const Vector3D<T>&);
+template <typename T> Vector3D<T> cross(const Vector3D<T>&, const Vector3D<T>&);
+
 template<typename T> class Vector3D{
-    template<typename U> friend U operator*(const Vector3D<U>& lhs, const Vector3D<U>& rhs);
-    template<typename U> friend U operator/(const Vector3D<U>& lhs, const Vector3D<U>& rhs);
-    template<typename U> friend Vector3D<U> operator/(const U scale, const Vector3D<U>& rhs);
-    template<typename U> friend Vector3D<U> cross(const Vector3D<U>& lhs, const Vector3D<U>& rhs);
+
+    friend T operator*<T>(const Vector3D<T>&, const Vector3D<T>&);
+    friend T operator/<T>(const Vector3D<T>&, const Vector3D<T>&);
+    friend Vector3D operator/<T>(const T, const Vector3D&);
+    friend Vector3D cross<T>(const Vector3D&, const Vector3D&);
 
     friend hid_t h5_Vector3D<T>();
 
