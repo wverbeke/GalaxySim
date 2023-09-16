@@ -17,7 +17,7 @@ template<typename T> Vector2D<T> operator/(const T, const Vector2D<T>&);
 template<typename T> class Vector2D{
     friend T operator*<T>(const Vector2D&, const Vector2D&);
     friend T operator/<T>(const Vector2D&, const Vector2D&);
-    friend Vector2D<T> operator/<T>(const T, const Vector2D&);
+    friend Vector2D operator/<T>(const T, const Vector2D&);
 
     friend hid_t h5_Vector2D<T>();
 

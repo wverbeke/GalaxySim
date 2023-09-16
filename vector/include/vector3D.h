@@ -18,8 +18,8 @@ template <typename T> Vector3D<T> cross(const Vector3D<T>&, const Vector3D<T>&);
 
 template<typename T> class Vector3D{
 
-    friend T operator*<T>(const Vector3D<T>&, const Vector3D<T>&);
-    friend T operator/<T>(const Vector3D<T>&, const Vector3D<T>&);
+    friend T operator*<T>(const Vector3D&, const Vector3D&);
+    friend T operator/<T>(const Vector3D&, const Vector3D&);
     friend Vector3D operator/<T>(const T, const Vector3D&);
     friend Vector3D cross<T>(const Vector3D&, const Vector3D&);
 
@@ -32,9 +32,9 @@ template<typename T> class Vector3D{
 
         Vector3D(const T x, const T y, const T z): _x(x), _y(y), _z(z) {}
 
-        Vector3D(const Vector3D<T>&) = default;
+        Vector3D(const Vector3D&) = default;
 
-        Vector3D(Vector3D<T>&&) = default;
+        Vector3D(Vector3D&&) = default;
 
         ~Vector3D() = default;
 
