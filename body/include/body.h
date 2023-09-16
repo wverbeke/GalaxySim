@@ -16,10 +16,10 @@ template<typename T> class Body{
             _mass(mass)
         {}
 
-        Body(const Body<T>&) = default;
-        Body(Body<T>&&) = default;
-        Body<T>& operator=(const Body<T>&) = default;
-        Body<T>& operator=(Body<T>&) = default;
+        Body(const Body&) = default;
+        Body(Body&&) = default;
+        Body& operator=(const Body&) = default;
+        Body& operator=(Body&) = default;
 
         const T& position() const{ return _position; }
         const T& velocity() const{ return _velocity; }
@@ -38,6 +38,5 @@ template<typename T> std::ostream& operator<<(std::ostream& os, const Body<T>& b
     os << "mass: " << body.mass() << " | position: " << body.position() << " | velocity: " << body.velocity();
     return os;
 }
-
 
 #endif
