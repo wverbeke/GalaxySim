@@ -10,6 +10,7 @@ template<typename BodyType> class StarSystem{
         using numeric_type = typename BodyType::numeric_type;
         using vector_type = typename BodyType::vector_type;
         using const_iterator = typename std::vector<BodyType>::const_iterator;
+        using iterator = typename std::vector<BodyType>::iterator;
 
         StarSystem(const std::vector<BodyType>& bodies, ForceComputerBase<BodyType>& force_computer):
             _bodies(bodies),
@@ -63,6 +64,9 @@ template<typename BodyType> class StarSystem{
         const_iterator cbegin() const{ return _bodies.cbegin(); }
         const_iterator end() const{ return _bodies.cend(); }
         const_iterator cend() const{ return _bodies.cend(); }
+
+        iterator begin(){return _bodies.begin();}
+        iterator end(){return _bodies.end();}
 
         // Interface to compute forces and accelerations, as well as the potential energy.
         void computeForces() const{ _force_computer.computeForces(*this); }
