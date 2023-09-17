@@ -94,6 +94,7 @@ template<typename BodyType> class ForceComputerBase{
         virtual void computeForcesAndPotentialImpl(const StarSystem<BodyType>&) = 0;
 
         // Reset all forces to be 0 vectors.
+        // All vectors are initialized to 0 along each dimension with the defauly initializer.
         void resetForces(){
             std::fill(_forces.begin(), _forces.end(), vector_type());
         }
