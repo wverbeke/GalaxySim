@@ -9,7 +9,7 @@
 #include "../../body/include/star_system.h"
 #include "numeric_types.h"
 
-
+constexpr char* DSET_NAME = "star_system_timestamps";
 
 template<typename BodyType> class StarSystemWriter{
     public:
@@ -60,7 +60,7 @@ template<typename BodyType> StarSystemWriter<BodyType>::StarSystemWriter(const s
     _status = H5Pset_chunk(chunk_prop, 2, _chunk_size);
 
     // TODO: Fix type hardcoding here.
-    _dset_id = H5Dcreate(_file_id, output_path.c_str(), H5T_IEEE_F64BE, _dspace_id, H5P_DEFAULT, chunk_prop, H5P_DEFAULT);
+    _dset_id = H5Dcreate(_file_id, DSET_NAME, H5T_IEEE_F64BE, _dspace_id, H5P_DEFAULT, chunk_prop, H5P_DEFAULT);
 
     // dataspace that will be used for writing star systems to disk one by one.
     // The chunk size corresponds to a single star system.
