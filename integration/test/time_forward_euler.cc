@@ -29,14 +29,14 @@ int main(){
     }
 
     DirectSumForceComputer<body_type> force_computer(1.);
-    StarSystem<body_type> star_system(bodies, force_computer);
+    StarSystem<body_type> star_system(bodies);
     ForwardEuler<body_type> forward_euler_integrator;
     constexpr numeric_type time_step = 1.;
     constexpr std::size_t num_steps = 1000.;
 
     auto t1 = std::chrono::high_resolution_clock::now();
     for(std::size_t i{0}; i < 1000; ++i){
-        forward_euler_integrator.timeStep(star_system, time_step);
+        forward_euler_integrator.timeStep(star_system, force_computer, time_step);
     }
     auto t2 = std::chrono::high_resolution_clock::now();
 

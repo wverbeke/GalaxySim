@@ -12,9 +12,8 @@ template<typename BodyType> class StarSystem{
         using const_iterator = typename std::vector<BodyType>::const_iterator;
         using iterator = typename std::vector<BodyType>::iterator;
 
-        StarSystem(const std::vector<BodyType>& bodies, ForceComputerBase<BodyType>& force_computer):
-            _bodies(bodies),
-            _force_computer(force_computer)
+        StarSystem(const std::vector<BodyType>& bodies):
+            _bodies(bodies)
         {};
         ~StarSystem() = default;
 
@@ -27,8 +26,8 @@ template<typename BodyType> class StarSystem{
         // Properties of the while star system.
         
         // Total energy in the star system.
-        numeric_type energy() const{
-            return (kineticEnergy() + potentialEnergy());
+        numeric_type energy(ForceComputerBase<BodyType>& force_computer) const{
+            return (kineticEnergy() + potentialEnergy(force_computer));
         }
 
         // Kinetic energy.
@@ -45,8 +44,8 @@ template<typename BodyType> class StarSystem{
         // This will only return correct results if the forces in the star system were already
         // computed. The force and potential energy computations largely overlap so they are done
         // simultaneously for efficiency.
-        numeric_type potentialEnergy() const{
-            return _force_computer.potentialEnergy();
+        numeric_type potentialEnergy(ForceComputerBase<BodyType>& force_computer) const{
+            return force_computer.potentialEnergy();
         }
 
         // Access individual bodies.
@@ -69,15 +68,14 @@ template<typename BodyType> class StarSystem{
         iterator end(){return _bodies.end();}
 
         // Interface to compute forces and accelerations, as well as the potential energy.
-        void computeForces() const{ _force_computer.computeForces(*this); }
-        void computeForcesAndPotential() const{ _force_computer.computeForcesAndPotential(*this); }
-        vector_type acceleration(const std::size_t index){
-            return (_force_computer.totalForce(index)/_bodies.at(index).mass());
+        void computeForces(ForceComputerBase<BodyType>& force_computer) const{ force_computer.computeForces(*this); }
+        void computeForcesAndPotential(ForceComputerBase<BodyType>& force_computer) const{ force_computer.computeForcesAndPotential(*this); }
+        vector_type acceleration(ForceComputerBase<BodyType>& force_computer, const std::size_t index){
+            return (force_computer.totalForce(index)/_bodies.at(index).mass());
         }
 
     private:
         std::vector<BodyType> _bodies;
-        ForceComputerBase<BodyType>& _force_computer;
 };
 
 #endif

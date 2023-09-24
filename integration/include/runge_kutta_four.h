@@ -13,6 +13,7 @@ template<typename BodyType> class RungeKuttaFour: public IntegratorBase<BodyType
         using vector_type = typename BodyType::vector_type;
 
         virtual void timeStep(StarSystem<BodyType>& star_system,
+                              ForceComputerBase<BodyType>& force_computer,
                               const numeric_type time_step) override
         {
             // During the first step, or if the size of the star system changes, the vector holding
@@ -24,34 +25,34 @@ template<typename BodyType> class RungeKuttaFour: public IntegratorBase<BodyType
             }
 
             // Start by computing the forces at the initial positions.
-            star_system.computeForcesAndPotential();
+            star_system.computeForcesAndPotential(force_computer);
             for(std::size_t b{0U}; b < star_system.size(); ++b){
                 star_system[b].updatePosition(star_system[b].velocity() * time_step / 2.);
-                _k_vel_1[b] = star_system.acceleration(b) * time_step;
+                _k_vel_1[b] = star_system.acceleration(force_computer, b) * time_step;
             }
 
             // The position updates happen in-place so some algebra is necessary to obtain the
             // equations used below from the normal Runge-Kutta update rules.
-            star_system.computeForces();
+            star_system.computeForces(force_computer);
             for(std::size_t b{0U}; b < star_system.size(); ++b){
                 star_system[b].updatePosition(time_step * _k_vel_1[b] / 4.);
-                _k_vel_2[b] = star_system.acceleration(b) * time_step;
+                _k_vel_2[b] = star_system.acceleration(force_computer, b) * time_step;
             }
-            star_system.computeForces();
+            star_system.computeForces(force_computer);
             for(std::size_t b{0U}; b < star_system.size(); ++b){
                 star_system[b].updatePosition(
                     time_step / 2. * ( star_system[b].velocity() + _k_vel_2[b] - _k_vel_1[b] / 2.)
                 );
-                _k_vel_3[b] = star_system.acceleration(b) * time_step;
+                _k_vel_3[b] = star_system.acceleration(force_computer, b) * time_step;
             }
-            star_system.computeForces();
+            star_system.computeForces(force_computer);
             for(std::size_t b{0U}; b < star_system.size(); ++b){
                 star_system[b].updatePosition(
                     time_step / 6. * (_k_vel_1[b] + _k_vel_3[b] - 2. * _k_vel_2[b])
                 );
                 star_system[b].updateVelocity(
                     1./6. * (_k_vel_1[b] + 2. * _k_vel_2[b] +
-                    2. * _k_vel_3[b] + star_system.acceleration(b) * time_step)
+                    2. * _k_vel_3[b] + star_system.acceleration(force_computer, b) * time_step)
                 );
             }
         }
