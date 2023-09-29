@@ -18,10 +18,10 @@ template<typename BodyType> class StarSystem{
         ~StarSystem() = default;
 
         // Star systems can not be copy constructed or copy assigned.
-        StarSystem(const StarSystem&) = delete;
-        StarSystem(StarSystem&&) = delete;
-        StarSystem& operator=(const StarSystem&) = delete;
-        StarSystem& operator=(StarSystem&&) = delete;
+        StarSystem(const StarSystem&) = default;
+        StarSystem(StarSystem&&) = default;
+        StarSystem& operator=(const StarSystem&) = default;
+        StarSystem& operator=(StarSystem&&) = default;
 
         // Properties of the while star system.
         

@@ -51,19 +51,21 @@ template<typename BodyType> class StarSystemReader{
         herr_t _status;
         std::size_t _num_timestamps;
 
+        // For memory space to read to reading.
+        hid_t _mem_space_id;
+        hsize_t _mem_offset[2] = {0, 0};
+
+
+
         // This should be generalized to 2D vectors as well.
         std::size_t _num_bodies;
-
-        // TODO: StarSystem should probably be refactored not to depend on this.
-        DirectSumForceComputer<BodyType> _dummy_force_computer;
 };
 
 
 template<typename BodyType> StarSystemReader<BodyType>::StarSystemReader(const std::string& read_path):
     _file_id(H5Fopen(read_path.c_str(), H5F_ACC_RDONLY, H5P_DEFAULT)),
     _dset_id(H5Dopen(_file_id, DSET_NAME, H5P_DEFAULT)),
-    _dspace_id(H5Dget_space(_dset_id)),
-    _dummy_force_computer()
+    _dspace_id(H5Dget_space(_dset_id))
 {
     // Read the dimensionality from the dataspace.
     const int ndims{H5Sget_simple_extent_ndims(_dspace_id)};
@@ -81,6 +83,10 @@ template<typename BodyType> StarSystemReader<BodyType>::StarSystemReader(const s
     // Size of the read block for a single star system time point.
     _block_size[0] = 1;
     _block_size[1] = dims[1];
+
+    // Initialize the memory data space for the reading.
+    _mem_space_id = H5Screate_simple(2, _block_size, NULL);
+    H5Sselect_hyperslab(_mem_space_id, H5S_SELECT_SET, _mem_offset, NULL, _block_size, NULL);
 }
 
 template<typename BodyType> StarSystemReader<BodyType>::~StarSystemReader(){
@@ -88,27 +94,26 @@ template<typename BodyType> StarSystemReader<BodyType>::~StarSystemReader(){
 }
 
 template<typename BodyType> std::pair<double, StarSystem<BodyType>> StarSystemReader<BodyType>::at(const std::size_t time_index) const{
-    // Select the correct hyperslab to read out the requested timestamp.
+    // Select the correct file hyperslab to read out the requested timestamp.
     hsize_t read_offset[2] = {time_index, 0};
     H5Sselect_hyperslab(_dspace_id, H5S_SELECT_SET, read_offset, NULL, _block_size, NULL);
 
     // Read the data into an array.
     // TODO: Generalize this to other types.
-    double read_array[_block_size[1]];
-    H5Dread(_dset_id, H5T_NATIVE_DOUBLE, H5S_ALL, _dspace_id, H5P_DEFAULT, read_array);
+    double read_array[_block_size[0]][_block_size[1]];
+    H5Dread(_dset_id, H5T_NATIVE_DOUBLE, _mem_space_id, _dspace_id, H5P_DEFAULT, read_array);
 
     // Convert the read array into a star system.
     // TODO: Generalize this to other vector types.
-    double timestamp = read_array[_block_size[1] - 1];
+    double timestamp = read_array[0][_block_size[1] - 1];
     std::vector<BodyType> bodies(_num_bodies);
     for(std::size_t b{0}; b < _num_bodies; ++b){
         std::size_t s{b*7};
-        Vector3D<double> pos{read_array[s], read_array[s + 1], read_array[s + 2]};
-        Vector3D<double> vel{read_array[s + 3], read_array[s + 4], read_array[s + 5]};
-        double mass{read_array[s + 6]};
+        Vector3D<double> pos{read_array[0][s], read_array[0][s + 1], read_array[0][s + 2]};
+        Vector3D<double> vel{read_array[0][s + 3], read_array[0][s + 4], read_array[0][s + 5]};
+        double mass{read_array[0][s + 6]};
         bodies[b] = BodyType{pos, vel, mass};
     }
-    StarSystem<BodyType> star_system{bodies, _dummy_force_computer};
-    return {timestamp, bodies};
+    return {timestamp, StarSystem<BodyType>{bodies}};
 }
 #endif
