@@ -16,8 +16,7 @@ int main(){
     const std::size_t num_bodies = 2;
     const std::string in_name = "/home/willem/code/GalaxySim/star_system_write.h5";
     StarSystemReader<body_type> star_reader(in_name);
-    //star_reader.at(2);
-    auto star_system_and_time = star_reader.at(1);
+    auto star_system_and_time = star_reader.at(3);
     auto ts = star_system_and_time.first;
     auto ss = star_system_and_time.second;
     for(const auto& b: ss){
