@@ -2,7 +2,6 @@
 #include "../../vector/include/vector3D.h"
 #include "../../body/include/body.h"
 #include "../../body/include/star_system.h"
-#include "../../force/include/direct_sum_force_computer.h"
 
 #include <string>
 #include <cstddef>
@@ -27,9 +26,7 @@ int main(){
         bodies.emplace_back(pos, vel, mass);
     }
     
-    DirectSumForceComputer<body_type> force_computer;
-
-    star_system_type star_system(bodies, force_computer);
+    star_system_type star_system(bodies);
     
     for(unsigned i = 0; i < 20; ++i){
         for(body_type& body: star_system){

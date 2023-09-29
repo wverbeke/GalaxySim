@@ -9,7 +9,7 @@
 #include "../../body/include/star_system.h"
 #include "numeric_types.h"
 
-constexpr char* DSET_NAME = "star_system_timestamps";
+constexpr char const* DSET_NAME = "star_system_snapshots";
 
 template<typename BodyType> class StarSystemWriter{
     public:
