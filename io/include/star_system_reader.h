@@ -37,11 +37,17 @@ template<typename BodyType> class StarSystemReader{
         // Number of timestamps stored in the file.
         std::size_t num_timestamps() const{ return _num_timestamps; }
 
+
         // Element access.
         // No reference is returned since we initialize a StarSystem object from a read array.
         // How should this work with interpolation between timestamps for visualization? Maybe it
         // is fine to interpolate between StarSystem objects at each timestamp there.
         std::pair<double, StarSystem<BodyType>> at(const std::size_t) const;
+
+        // Interpolated access. We request a specific timestamp and read only that one.
+        // This should probably be optimized at some point.
+        //std::vector<double> timestamps() const;
+        //StarSystem<BodyType> interpolate(const double) const;
 
     private:
         hid_t _file_id;
@@ -94,7 +100,7 @@ template<typename BodyType> StarSystemReader<BodyType>::~StarSystemReader(){
 }
 
 template<typename BodyType> std::pair<double, StarSystem<BodyType>> StarSystemReader<BodyType>::at(const std::size_t time_index) const{
-    // Select the correct file hyperslab to read out the requested timestamp.
+    // Select the correct file hyperslab to read out the requested time index.
     hsize_t read_offset[2] = {time_index, 0};
     H5Sselect_hyperslab(_dspace_id, H5S_SELECT_SET, read_offset, NULL, _block_size, NULL);
 
@@ -109,11 +115,18 @@ template<typename BodyType> std::pair<double, StarSystem<BodyType>> StarSystemRe
     std::vector<BodyType> bodies(_num_bodies);
     for(std::size_t b{0}; b < _num_bodies; ++b){
         std::size_t s{b*7};
-        Vector3D<double> pos{read_array[s], read_array[s + 1], read_array[s + 2]};
-        Vector3D<double> vel{read_array[s + 3], read_array[s + 4], read_array[s + 5]};
-        double mass{read_array[s + 6]};
+        double mass{read_array[s]};
+        Vector3D<double> pos{read_array[s + 1], read_array[s + 2], read_array[s + 3]};
+        Vector3D<double> vel{read_array[s + 4], read_array[s + 5], read_array[s + 6]};
         bodies[b] = BodyType{pos, vel, mass};
     }
     return {timestamp, StarSystem<BodyType>{bodies}};
 }
+
+
+//template<typename BodyType> std::vector<double> StarSystemReader<BodyType>::timestamps() const{
+//}
+//
+//template<typename BodyType> StarSystem<BodyType> StarSystemReader<BodyType>::interpolate(const double) const{
+//}
 #endif

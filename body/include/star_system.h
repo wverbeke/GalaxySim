@@ -78,4 +78,16 @@ template<typename BodyType> class StarSystem{
         std::vector<BodyType> _bodies;
 };
 
+template <typename BodyType> bool all_close(const StarSystem<BodyType>& lhs, const StarSystem<BodyType>& rhs){
+    if(lhs.size() != rhs.size()){
+        return false;
+    }
+    for(std::size_t b{0}; b < lhs.size(); ++b){
+        if(!is_close(lhs[b], rhs[b])){
+            return false;
+        }
+    }
+    return true;
+}
+
 #endif

@@ -2,6 +2,9 @@
 #define Body_H
 
 #include <ostream>
+#include "../../vector/include/compare_numbers.h"
+#include "../../vector/include/vector3D.h"
+#include "../../vector/include/vector2D.h"
 
 template<typename T> class Body{
 
@@ -37,6 +40,14 @@ template<typename T> class Body{
 template<typename T> std::ostream& operator<<(std::ostream& os, const Body<T>& body){
     os << "mass: " << body.mass() << " | position: " << body.position() << " | velocity: " << body.velocity();
     return os;
+}
+
+template<typename T> bool is_close(const Body<T>& lhs, const Body<T>& rhs){
+    return (
+        is_close(lhs.position(), rhs.position()) &&
+        is_close(lhs.velocity(), rhs.velocity()) &&
+        is_close(lhs.mass(), rhs.mass())
+    );
 }
 
 #endif

@@ -5,6 +5,7 @@
 #include <cmath>
 
 #include "hdf5.h"
+#include "compare_numbers.h"
 
 // Friend functions for doing hdf5 IO.
 // The function is defined under the io directory.
@@ -16,12 +17,16 @@ template <typename T> T operator/(const Vector3D<T>&, const Vector3D<T>&);
 template <typename T> Vector3D<T> operator/(const T, const Vector3D<T>&);
 template <typename T> Vector3D<T> cross(const Vector3D<T>&, const Vector3D<T>&);
 
+// For testing.
+template <typename T> bool is_close(const Vector3D<T>&, const Vector3D<T>&);
+
 template<typename T> class Vector3D{
 
     friend T operator*<T>(const Vector3D&, const Vector3D&);
     friend T operator/<T>(const Vector3D&, const Vector3D&);
     friend Vector3D operator/<T>(const T, const Vector3D&);
     friend Vector3D cross<T>(const Vector3D&, const Vector3D&);
+    friend bool is_close<T>(const Vector3D&, const Vector3D&);
 
     friend hid_t h5_Vector3D<T>();
 
@@ -219,6 +224,10 @@ template<typename T> Vector3D<T> cross(const Vector3D<T>& lhs, const Vector3D<T>
 template<typename T> std::ostream& operator<<(std::ostream& os, const Vector3D<T>& rhs){
     os << "(" << rhs.x() << ", "<< rhs.y() <<", " << rhs.z() << ")";
     return os;
+}
+
+template <typename T> bool is_close(const Vector3D<T>& lhs, const Vector3D<T>& rhs){
+    return (is_close(lhs._x, rhs._x) && is_close(lhs._y, rhs._y) && is_close(lhs._z, rhs._z));
 }
 
 #endif
